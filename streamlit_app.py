@@ -1,10 +1,9 @@
-
 import streamlit as st
 import joblib
 import numpy as np
 
 # Load the trained model
-model = joblib.load('capsim_units_sold_model.pkl')
+model = joblib.load('capsim_units_sold_model_v1_5_2.pkl')
 
 # Function to make predictions
 def predict_units_sold(age_exp, price_lower_exp, price_upper_exp, pos_pmft, pos_size, 
@@ -25,7 +24,8 @@ def predict_units_sold(age_exp, price_lower_exp, price_upper_exp, pos_pmft, pos_
 # Streamlit UI
 st.title("Capsim Units Sold Predictor")
 
-st.write("This model predicts units sold based on various product and market factors. Please note, the estimate might be off by approximately 163 units.")
+st.write("This model predicts units sold based on various product and market factors. \
+Please note, the estimate might be off by approximately 163 units.")
 
 # Input fields for all features
 age_exp = st.number_input("Age Expectation", min_value=0.0, step=0.1)
