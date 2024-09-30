@@ -44,28 +44,76 @@ This model predicts units sold based on various product and market factors.
 **Please note:** The estimate might be off by approximately **163 units**.
 """)
 
-# Input fields for all features
-age_exp = st.number_input("Age Expectation", min_value=0.0, step=0.1)
-price_lower_exp = st.number_input("Price Lower Expectation", min_value=0.0, step=0.1)
-price_upper_exp = st.number_input("Price Upper Expectation", min_value=0.0, step=0.1)
-pos_pmft = st.number_input("Ideal Position PMFT", min_value=0.0, step=0.1)
-pos_size = st.number_input("Ideal Position Size", min_value=0.0, step=0.1)
-reliability_lower = st.number_input("Reliability MTBF Lower Limit", min_value=0.0, step=100.0)
-reliability_upper = st.number_input("Reliability MTBF Upper Limit", min_value=0.0, step=100.0)
-pmft_actual = st.number_input("PMFT Actual", min_value=0.0, step=0.1)
-size_actual = st.number_input("Size Coordinate Actual", min_value=0.0, step=0.1)
-price_actual = st.number_input("Price Actual", min_value=0.0, step=0.1)
-mtbf_actual = st.number_input("MTBF Actual", min_value=0.0, step=100.0)
-age_actual = st.number_input("Age Actual", min_value=0.0, step=0.1)
-awareness_actual = st.number_input("Awareness Actual", min_value=0.0, step=0.1)
-accessibility_actual = st.number_input("Accessibility Actual", min_value=0.0, step=0.1)
-promo_budget = st.number_input("Promo Budget Actual", min_value=0.0, step=1000.0)
-sales_budget = st.number_input("Sales Budget Actual", min_value=0.0, step=1000.0)
-age_imp = st.number_input("Age Expectation Importance", min_value=0.0, step=1.0)
-price_imp = st.number_input("Price Importance", min_value=0.0, step=1.0)
-pos_imp = st.number_input("Ideal Position Importance", min_value=0.0, step=1.0)
-reliability_imp = st.number_input("Reliability Importance", min_value=0.0, step=1.0)
-total_demand = st.number_input("Total Industry Unit Demand", min_value=0.0, step=100.0)
+# Buying Criteria Section
+st.markdown("### Buying Criteria")
+
+# Create columns for the table headers
+col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1.write("**Criteria**")
+col2.write("**Ideal Value**")
+col3.write("**Low End of Range**")
+col4.write("**High End of Range**")
+col5.write("**Importance (%)**")
+
+# Price Criterion
+col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1.write("Price")
+col2.write("N/A")
+price_lower_exp = col3.number_input("", key='price_lower_exp', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Low End")
+price_upper_exp = col4.number_input("", key='price_upper_exp', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="High End")
+price_imp = col5.number_input("", key='price_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+
+# Age Criterion
+col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1.write("Age")
+age_exp = col2.number_input("", key='age_exp', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Ideal Age")
+col3.write("N/A")
+col4.write("N/A")
+age_imp = col5.number_input("", key='age_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+
+# Ideal Position Criterion
+col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1.write("Ideal Position")
+with col2:
+    pos_pmft = st.number_input("", key='pos_pmft', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Pfmn")
+    pos_size = st.number_input("", key='pos_size', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Size")
+col3.write("N/A")
+col4.write("N/A")
+pos_imp = col5.number_input("", key='pos_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+
+# MTBF Criterion
+col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1.write("MTBF")
+col2.write("N/A")
+reliability_lower = col3.number_input("", key='reliability_lower', min_value=0.0, step=100.0, label_visibility="collapsed", placeholder="Low End")
+reliability_upper = col4.number_input("", key='reliability_upper', min_value=0.0, step=100.0, label_visibility="collapsed", placeholder="High End")
+reliability_imp = col5.number_input("", key='reliability_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+
+# Divider
+st.markdown("---")
+
+# Actual Product Values
+st.markdown("### Actual Product Values")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    age_actual = st.number_input("Age (years)", min_value=0.0, step=0.1)
+    price_actual = st.number_input("Price ($)", min_value=0.0, step=0.1)
+    pmft_actual = st.number_input("Performance", min_value=0.0, step=0.1)
+    size_actual = st.number_input("Size", min_value=0.0, step=0.1)
+    mtbf_actual = st.number_input("MTBF (hours)", min_value=0.0, step=100.0)
+
+with col2:
+    awareness_actual = st.number_input("Awareness (%)", min_value=0.0, max_value=100.0, step=1.0)
+    accessibility_actual = st.number_input("Accessibility (%)", min_value=0.0, max_value=100.0, step=1.0)
+    promo_budget = st.number_input("Promo Budget", min_value=0.0, step=1000.0)
+    sales_budget = st.number_input("Sales Budget", min_value=0.0, step=1000.0)
+    total_demand = st.number_input("Total Industry Unit Demand", min_value=0.0, step=100.0)
+
+# Convert percentage inputs to decimals if needed
+awareness_actual /= 100
+accessibility_actual /= 100
 
 # Predict button
 if st.button("Predict Units Sold"):
