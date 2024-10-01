@@ -21,14 +21,14 @@ def load_model(model_path):
 model = load_model('capsim_units_sold_model.pkl')
 
 # Function to make predictions
-def predict_units_sold(age_exp, price_lower_exp, price_upper_exp, pos_pmft, pos_size, 
-                       reliability_lower, reliability_upper, pmft_actual, size_actual, 
+def predict_units_sold(age_exp, price_lower_exp, price_upper_exp, pos_pfmn, pos_size, 
+                       reliability_lower, reliability_upper, pfmn_actual, size_actual, 
                        price_actual, mtbf_actual, age_actual, awareness_actual, 
                        accessibility_actual, promo_budget, sales_budget, age_imp, price_imp, 
                        pos_imp, reliability_imp, total_demand):
     
-    features = np.array([[age_exp, price_lower_exp, price_upper_exp, pos_pmft, pos_size, 
-                          reliability_lower, reliability_upper, pmft_actual, size_actual, 
+    features = np.array([[age_exp, price_lower_exp, price_upper_exp, pos_pfmn, pos_size, 
+                          reliability_lower, reliability_upper, pfmn_actual, size_actual, 
                           price_actual, mtbf_actual, age_actual, awareness_actual, 
                           accessibility_actual, promo_budget, sales_budget, age_imp, price_imp, 
                           pos_imp, reliability_imp, total_demand]])
@@ -48,7 +48,7 @@ This model predicts units sold based on various product and market factors.
 st.markdown("### Buying Criteria")
 
 # Create columns for the table headers
-col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1, col2, col3, col4, col5 = st.columns([2, 2.5, 2, 2, 2])
 col1.write("**Criteria**")
 col2.write("**Ideal Value**")
 col3.write("**Low End of Range**")
@@ -56,38 +56,39 @@ col4.write("**High End of Range**")
 col5.write("**Importance (%)**")
 
 # Price Criterion
-col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1, col2, col3, col4, col5 = st.columns([2, 2.5, 2, 2, 2])
 col1.write("Price")
 col2.write("N/A")
-price_lower_exp = col3.number_input("", key='price_lower_exp', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Low End")
-price_upper_exp = col4.number_input("", key='price_upper_exp', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="High End")
-price_imp = col5.number_input("", key='price_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+price_lower_exp = col3.number_input("Low End", key='price_lower_exp', min_value=0.0, step=0.1)
+price_upper_exp = col4.number_input("High End", key='price_upper_exp', min_value=0.0, step=0.1)
+price_imp = col5.number_input("Importance", key='price_imp', min_value=0.0, step=1.0)
 
 # Age Criterion
-col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1, col2, col3, col4, col5 = st.columns([2, 2.5, 2, 2, 2])
 col1.write("Age")
-age_exp = col2.number_input("", key='age_exp', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Ideal Age")
+age_exp = col2.number_input("Ideal Age", key='age_exp', min_value=0.0, step=0.1)
 col3.write("N/A")
 col4.write("N/A")
-age_imp = col5.number_input("", key='age_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+age_imp = col5.number_input("Importance", key='age_imp', min_value=0.0, step=1.0)
 
 # Ideal Position Criterion
-col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1, col2, col3, col4, col5 = st.columns([2, 2.5, 2, 2, 2])
 col1.write("Ideal Position")
 with col2:
-    pos_pmft = st.number_input("", key='pos_pmft', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Pfmn")
-    pos_size = st.number_input("", key='pos_size', min_value=0.0, step=0.1, label_visibility="collapsed", placeholder="Size")
+    pos_col1, pos_col2 = st.columns(2)
+    pos_pfmn = pos_col1.number_input("Pfmn", key='pos_pfmn', min_value=0.0, step=0.1)
+    pos_size = pos_col2.number_input("Size", key='pos_size', min_value=0.0, step=0.1)
 col3.write("N/A")
 col4.write("N/A")
-pos_imp = col5.number_input("", key='pos_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+pos_imp = col5.number_input("Importance", key='pos_imp', min_value=0.0, step=1.0)
 
 # MTBF Criterion
-col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 2])
+col1, col2, col3, col4, col5 = st.columns([2, 2.5, 2, 2, 2])
 col1.write("MTBF")
 col2.write("N/A")
-reliability_lower = col3.number_input("", key='reliability_lower', min_value=0.0, step=100.0, label_visibility="collapsed", placeholder="Low End")
-reliability_upper = col4.number_input("", key='reliability_upper', min_value=0.0, step=100.0, label_visibility="collapsed", placeholder="High End")
-reliability_imp = col5.number_input("", key='reliability_imp', min_value=0.0, step=1.0, label_visibility="collapsed", placeholder="Importance")
+reliability_lower = col3.number_input("Low End", key='reliability_lower', min_value=0.0, step=100.0)
+reliability_upper = col4.number_input("High End", key='reliability_upper', min_value=0.0, step=100.0)
+reliability_imp = col5.number_input("Importance", key='reliability_imp', min_value=0.0, step=1.0)
 
 # Divider
 st.markdown("---")
@@ -100,7 +101,7 @@ col1, col2 = st.columns(2)
 with col1:
     age_actual = st.number_input("Age (years)", min_value=0.0, step=0.1)
     price_actual = st.number_input("Price ($)", min_value=0.0, step=0.1)
-    pmft_actual = st.number_input("Performance", min_value=0.0, step=0.1)
+    pfmn_actual = st.number_input("Performance", min_value=0.0, step=0.1)
     size_actual = st.number_input("Size", min_value=0.0, step=0.1)
     mtbf_actual = st.number_input("MTBF (hours)", min_value=0.0, step=100.0)
 
@@ -120,8 +121,8 @@ if st.button("Predict Units Sold"):
     if model is not None:
         try:
             result = predict_units_sold(
-                age_exp, price_lower_exp, price_upper_exp, pos_pmft, pos_size, 
-                reliability_lower, reliability_upper, pmft_actual, size_actual, 
+                age_exp, price_lower_exp, price_upper_exp, pos_pfmn, pos_size, 
+                reliability_lower, reliability_upper, pfmn_actual, size_actual, 
                 price_actual, mtbf_actual, age_actual, awareness_actual, 
                 accessibility_actual, promo_budget, sales_budget, age_imp, price_imp, 
                 pos_imp, reliability_imp, total_demand
